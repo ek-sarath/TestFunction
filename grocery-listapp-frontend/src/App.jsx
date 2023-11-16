@@ -1,20 +1,103 @@
-import React, {useState} from 'react';
-import Introduction from './components/Introduction';
-import GroceryListApp from './components/GroceryListApp';
+import React, { useState } from "react";
 import '../src/App.css';
+import { Login } from "./components/Login";
+import { Register } from "./components/Register";
+import GroceryListApp from "./components/GroceryListApp";
 
 function App() {
-  const [started, setStarted] = useState(false);
+  const [currentForm, setCurrentForm] = useState('login');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const toggleForm = (formName) => {
+    setCurrentForm(formName);
+  }
+
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true);
+  }
 
   return (
     <div className="App">
-      {started ? (
+      {isLoggedIn ? (
         <GroceryListApp />
       ) : (
-        <Introduction onStart={() => setStarted(true)} />
+        currentForm === "login" ? (
+          <Login onFormSwitch={toggleForm} onLoginSuccess={handleLoginSuccess} />
+        ) : (
+          <Register onFormSwitch={toggleForm} />
+        )
       )}
     </div>
   );
 }
 
 export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, {useState} from "react";
+// import '../src/App.css';
+// import { Login } from "./components/Login";
+// import { Register } from "./components/Register";
+
+// function App() {
+//   const [currentForm, setCurrentForm] = useState('login');
+
+//   const toggleForm = (formName) => {
+//     setCurrentForm(formName);
+//   }
+
+//   return (
+//     <div className="App">
+//       {
+//         currentForm === "login" ? <Login onFormSwitch={toggleForm} /> : <Register onFormSwitch={toggleForm} />
+//       }
+//     </div>
+//   );
+// }
+
+// export default App;
