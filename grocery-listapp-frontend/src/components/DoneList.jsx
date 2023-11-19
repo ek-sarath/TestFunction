@@ -1,12 +1,9 @@
 import React from 'react';
-import Tick from '../assets/doneRound.svg';
 
-const DoneList = ({ items }) => {
+const DoneList = ({items}) => {
   return (
-    <div>
-      <div className='Rounder'>
-      <img src={Tick} alt ='Tick Round' className='TickRound'/>
-      <h3>Done List</h3></div>
+      <div className='DoneList'>
+      <h3>Done List</h3>
       <ul className="Vblee">
         {items.map((item, index) => (
           <li key={index} className="Kblee">
