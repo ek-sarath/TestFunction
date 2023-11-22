@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CardList from './CardList';
 import ListDetails from './ListDetails';
 import AddList from './AddList';
+
 import '../App.css';
 
 const GroceryListApp = () => {
@@ -97,8 +98,9 @@ const GroceryListApp = () => {
           />
         ))}
         <AddList onAdd={handleAddList} />
+
       </div>
-      {selectedList && <ListDetails listName={selectedList.name} />}
+      {selectedList && <ListDetails listName={selectedList.name} appListId={selectedList.appListId} />}
     </div>
   );
 };
