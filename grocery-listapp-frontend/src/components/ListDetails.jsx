@@ -38,19 +38,19 @@ const ListDetails = ({ listName }) => {
   return (
     <div>
       <h2>{listName}</h2>
-      <AddItem onAdd={handleAddItem} editingItem={editingIndex !== null ? items[editingIndex] : null} />
-
+      <AddItem
+        onAdd={handleAddItem}
+        editingItem={editingIndex !== null ? items[editingIndex] : null}
+      />
 
       <div className='ItemDoneList'>
-        
-      <ItemList
-        items={items}
-        onMarkDone={handleMarkDone}
-        onEdit={handleEditItem}
-        onDelete={handleDeleteItem}/>
-
-      <DoneList items={doneItems} />
-
+        <ItemList
+          items={items}
+          onMarkDone={handleMarkDone}
+          onEdit={handleEditItem}
+          onDelete={handleDeleteItem}
+        />
+        <DoneList items={doneItems} />
       </div>
     </div>
   );

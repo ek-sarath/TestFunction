@@ -7,10 +7,7 @@ import '../App.css';
 
 const GroceryListApp = () => {
   const [selectedList, setSelectedList] = useState(null);
-  const [lists, setLists] = useState([
-    { id: 1, name: 'Grocery List' },
-    { id: 2, name: 'Office List' },
-  ]);
+  const [lists, setLists] = useState([]);
 
   useEffect(() => {
     fetchData();
@@ -19,22 +16,32 @@ const GroceryListApp = () => {
   
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:8085/app-list');
+      const response = await axios.get('http://localhost:8085/app-list/sorted');
       setLists(response.data);
-      console.log('Data fetched successfully:', response.data);
+      console.log('All List Data fetched successfully:', response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
 
-  const handleListClick = (list) => {
-    setSelectedList(list);
-  };
+  const fetchListDetails = async (listId) => {
+        try {
+          const response = await axios.get(`http://localhost:8085/app-list/${listId}`);
+          console.log('New List data fetched successfully:', response.data);
+          return response.data;
+        } catch (error) {
+          console.error('Error fetching list details:', error);
+        }
+      };
+    
+      const handleListClick = async (list) => {
+        setSelectedList(await fetchListDetails(list.appListId));
+      };
 
   const handleDeleteList = async (list) => {
     try {
-      await axios.delete(`http://localhost:8085/app-list/${list.id}`);
-      setLists((prevLists) => prevLists.filter((l) => l.id !== list.id));
+      await axios.delete(`http://localhost:8085/app-list/${list.appListId}`);
+      setLists((prevLists) => prevLists.filter((l) => l.appListId !== list.appListId));
       setSelectedList(null);
       console.log('List deleted successfully:', list);
     } catch (error) {
@@ -46,16 +53,17 @@ const GroceryListApp = () => {
     const newName = prompt('Enter new name:', list.name);
     if (newName) {
       try {
-        await axios.put(`http://localhost:8085/app-list/${list.id}`, { name: newName });
+        await axios.put(`http://localhost:8085/app-list/app/${list.appListId}`, { name: newName });
         setLists((prevLists) =>
-          prevLists.map((l) => (l.id === list.id ? { ...l, name: newName } : l))
+          prevLists.map((l) => (l.appListId === list.appListId ? { ...l, name: newName } : l))
         );
-        console.log('List updated successfully:', list.id, newName);
+        console.log('List updated successfully:', list.appListId, newName);
       } catch (error) {
         console.error('Error editing list name:', error);
       }
     }
   };
+
 
   const handleAddList = async (listName) => {
     if (listName) {
@@ -64,7 +72,7 @@ const GroceryListApp = () => {
           name: listName,
         });
 
-        const newList = { id: response.data.id, name: response.data.name };
+        const newList = { appListId: response.data.appListId, name: response.data.name };
         setLists((prevLists) => [...prevLists, newList]);
 
         console.log('List added successfully:', newList);
@@ -81,7 +89,7 @@ const GroceryListApp = () => {
       <div className="list-container">
         {lists.map((list) => (
           <CardList
-            key={list.id}
+            key={list.appListId}
             name={list.name}
             onClick={() => handleListClick(list)}
             onDelete={() => handleDeleteList(list)}
@@ -96,3 +104,22 @@ const GroceryListApp = () => {
 };
 
 export default GroceryListApp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
