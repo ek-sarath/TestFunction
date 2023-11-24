@@ -7,7 +7,9 @@ const ListDetails = ({ listName, appListId }) => {
   const [lists, setLists] = useState({
     [appListId]: [],
   });
-  const [doneItems, setDoneItems] = useState([]);
+  const [doneItems, setDoneItems] = useState({
+    [appListId]: [],
+  });
   const [editingIndex, setEditingIndex] = useState(null);
 
   const handleAddItem = (item, listId) => {
@@ -23,7 +25,10 @@ const ListDetails = ({ listName, appListId }) => {
 
   const handleMarkDone = (index, listId) => {
     const markedItem = lists[listId][index];
-    setDoneItems((prevDoneItems) => [...prevDoneItems, markedItem]);
+    setDoneItems((prevDoneItems) => ({
+      ...prevDoneItems,
+      [listId]: [...(prevDoneItems[listId] || []), markedItem],
+    }));
     setLists((prevLists) => ({
       ...prevLists,
       [listId]: prevLists[listId].filter((_, i) => i !== index),
@@ -55,9 +60,9 @@ const ListDetails = ({ listName, appListId }) => {
           items={lists[appListId] || []}
           onMarkDone={(index) => handleMarkDone(index, appListId)}
           onEdit={handleEditItem}
-          onDelete={(index) => handleDeleteItem(index, appListId)}
+          onDelete={(itemId) => handleDeleteItem(itemId, appListId)}
         />
-        <DoneList items={doneItems} />
+        <DoneList items={doneItems[appListId] || []} />
       </div>
     </div>
   );
@@ -73,60 +78,113 @@ export default ListDetails;
 
 
 
-// import React, { useState } from 'react';
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, { useState, useEffect } from 'react';
+// import axios from 'axios';
 // import AddItem from './AddItem';
 // import ItemList from './ItemList';
 // import DoneList from './DoneList';
 
-// const ListDetails = ({ listName, appListId }) => {
-//   const [items, setItems] = useState([]);
-//   const [doneItems, setDoneItems] = useState([]);
+// const ListDetails = ({ listName, appListId, itemId }) => {
+//   const [lists, setLists] = useState({
+//     [appListId]: [],
+//   });
+//   const [doneItems, setDoneItems] = useState({
+//     [appListId]: [],
+//   });
 //   const [editingIndex, setEditingIndex] = useState(null);
-
-//   const handleAddItem = (item) => {
-//     if (editingIndex !== null) {
-//       const updatedItems = [...items];
-//       updatedItems[editingIndex] = item;
-//       setItems(updatedItems);
-//       setEditingIndex(null);
-//     } else {
-//       setItems((prevItems) => [...prevItems, item]);
+//   const [selectedItem, setSelectedItem] = useState(null);
+  
+//   const fetchItemById = async () => {
+//     try {
+//       const response = await axios.get(`http://localhost:8085/app-list/items/${itemId}?appListId=${appListId}`);
+//       console.log('Item fetched successfully:', response.data);
+//       return response.data;
+//     } catch (error) {
+//       console.error('Error fetching item:', error);
 //     }
 //   };
 
-//   const handleMarkDone = (index) => {
-//     const markedItem = items[index];
-//     setDoneItems((prevDoneItems) => [...prevDoneItems, markedItem]);
-//     setItems((prevItems) => prevItems.filter((_, i) => i !== index));
+
+//   useEffect(() => {
+//     const fetchItem = async () => {
+//       const item = await fetchItemById();
+//       setSelectedItem(item);
+//     };
+//     fetchItem();
+//   }, [appListId, itemId]);
+
+//   const handleAddItem = (item, listId) => {
+//     setLists((prevLists) => {
+//       const updatedList = [...(prevLists[listId] || []), item];
+//       return { ...prevLists, [listId]: updatedList };
+//     });
+
+//     if (editingIndex !== null) {
+//       setEditingIndex(null);
+//     }
 //   };
 
-//   const handleEditItem = (index) => {
-//     setEditingIndex(index);
-//   };
-
-//   const handleDeleteItem = (index) => {
-//     const updatedItems = [...items];
-//     updatedItems.splice(index, 1);
-//     setItems(updatedItems);
-//   };
+//   const handleMarkDone = (index, listId) => {
+//         const markedItem = lists[listId][index];
+//         setDoneItems((prevDoneItems) => ({
+//           ...prevDoneItems,
+//           [listId]: [...(prevDoneItems[listId] || []), markedItem],
+//         }));
+//         setLists((prevLists) => ({
+//           ...prevLists,
+//           [listId]: prevLists[listId].filter((_, i) => i !== index),
+//         }));
+//       };
+      
+    
+//       const handleEditItem = (index) => {
+//         setEditingIndex(index);
+//       };
+    
+//       const handleDeleteItem = (index, listId) => {
+//         setLists((prevLists) => ({
+//           ...prevLists,
+//           [listId]: prevLists[listId].filter((_, i) => i !== index),
+//         }));
+//       };
 
 //   return (
 //     <div>
 //       <h2>{listName}</h2>
 //       <AddItem
-//         onAdd={handleAddItem}
-//         editingItem={editingIndex !== null ? items[editingIndex] : null}
+//         onAdd={(item) => handleAddItem(item, appListId)}
+//         editingItem={editingIndex !== null ? lists[appListId][editingIndex] : null}
 //         appListId={appListId}
 //       />
 
+//       {selectedItem && (
+//         <div>
+//           <p>Name: {selectedItem.name}</p>
+//           <p>Description: {selectedItem.description}</p>
+
+//         </div>
+//       )}
+
 //       <div className='ItemDoneList'>
-//         <ItemList
-//           items={items}
-//           onMarkDone={handleMarkDone}
+//       <ItemList
+//           items={lists[appListId] || []}
+//           onMarkDone={(index) => handleMarkDone(index, appListId)}
 //           onEdit={handleEditItem}
-//           onDelete={handleDeleteItem}
+//           onDelete={(index) => handleDeleteItem(index, appListId)}
 //         />
-//         <DoneList items={doneItems} />
+//         <DoneList items={doneItems[appListId] || []} appListId={appListId} />
 //       </div>
 //     </div>
 //   );
