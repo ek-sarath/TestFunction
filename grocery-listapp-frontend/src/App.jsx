@@ -6,7 +6,7 @@ import GroceryListApp from "./components/GroceryListApp";
 
 function App() {
   const [currentForm, setCurrentForm] = useState('login');
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const toggleForm = (formName) => {
     setCurrentForm(formName);
