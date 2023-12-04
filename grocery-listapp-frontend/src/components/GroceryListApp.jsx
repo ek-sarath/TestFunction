@@ -88,6 +88,7 @@ const GroceryListApp = () => {
     <div className="container">
       <h1>List Manager App</h1>
       <div className="list-container">
+      <AddList onAdd={handleAddList} />
         {lists.map((list) => (
           <CardList
             key={list.appListId}
@@ -97,7 +98,6 @@ const GroceryListApp = () => {
             onEdit={() => handleEditListName(list)}
           />
         ))}
-        <AddList onAdd={handleAddList} />
 
       </div>
       {selectedList && <ListDetails listName={selectedList.name} appListId={selectedList.appListId} />}

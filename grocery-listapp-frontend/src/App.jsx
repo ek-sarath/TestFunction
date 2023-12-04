@@ -1,34 +1,68 @@
-import React, { useState } from "react";
+// App.js
+import React from 'react';
+import { Provider } from 'react-redux';
+import store from './Store';
 import '../src/App.css';
-import {Login} from "./components/Login";
-import {Register} from "./components/Register";
-import GroceryListApp from "./components/GroceryListApp";
+// import { Login } from './components/Login';
+// import { Register } from './components/Register';
+// import GroceryListApp from './components/GroceryListApp';
 
 function App() {
-  const [currentForm, setCurrentForm] = useState('login');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const toggleForm = (formName) => {
-    setCurrentForm(formName);
-  }
-
-  const handleLoginSuccess = () => {
-    setIsLoggedIn(true);
-  }
-
   return (
-    <div className="App">
-      {isLoggedIn ? (
-        <GroceryListApp />
-      ) : (
-        currentForm === "login" ? (
-          <Login onFormSwitch={toggleForm} onLoginSuccess={handleLoginSuccess} />
-        ) : (
-          <Register onFormSwitch={toggleForm} />
-        )
-      )}
-    </div>
+    <Provider store={store}>
+      <div className="App">
+        <ConnectedApp />
+      </div>
+    </Provider>
   );
 }
 
 export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, { useState } from "react";
+// import '../src/App.css';
+// import {Login} from "./components/Login";
+// import {Register} from "./components/Register";
+// import GroceryListApp from "./components/GroceryListApp";
+
+// function App() {
+//   const [currentForm, setCurrentForm] = useState('login');
+//   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+//   const toggleForm = (formName) => {
+//     setCurrentForm(formName);
+//   }
+
+//   const handleLoginSuccess = () => {
+//     setIsLoggedIn(true);
+//   }
+
+//   return (
+//     <div className="App">
+//       {isLoggedIn ? (
+//         <GroceryListApp />
+//       ) : (
+//         currentForm === "login" ? (
+//           <Login onFormSwitch={toggleForm} onLoginSuccess={handleLoginSuccess} />
+//         ) : (
+//           <Register onFormSwitch={toggleForm} />
+//         )
+//       )}
+//     </div>
+//   );
+// }
+
+// export default App;
