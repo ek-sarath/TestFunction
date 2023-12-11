@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { useRegisterMutation } from '../store';
+import { useRegisterMutation } from '../redux/store';
 
 export const Register = (props) => {
   const dispatch = useDispatch();

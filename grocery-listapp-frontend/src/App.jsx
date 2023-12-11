@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { store } from './redux/store';
+import { store } from '../src/redux/store';
 import { Login } from './components/Login';
 import { Register } from './components/Register';
 import GroceryListApp from './components/GroceryListApp';

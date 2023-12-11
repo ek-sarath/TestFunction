@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { useLoginMutation } from '../store';
+import { useLoginMutation } from '../redux/store';
 
 export const Login = (props) => {
   const dispatch = useDispatch();
